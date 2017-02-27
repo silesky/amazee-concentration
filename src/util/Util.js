@@ -22,11 +22,15 @@ export const generateCardArray = (numOfCards = 52) => {
   }
   let _cardArr = [];
   for (let i = 0; i < _actualCards; i++) {
-    const _cardObj = { color: _getRandomColor(), value: _getRandomNumber(), id: uuid() } // important to not that these are pairs of each uuid
+    const _cardObj = { color: _getRandomColor(), value: _getRandomNumber(), id: uuid(), visible: false } // important to not that these are pairs of each uuid
     _cardArr.push(_cardObj)
   }
   const allCardsArr = _cardArr.concat(_cardArr);
-  const shuffledArr = shuffle(allCardsArr)
+  const allCardsArrWithKeys = allCardsArr.map(eachCard => {
+    eachCard.key = uuid();
+    return eachCard
+  })
+  const shuffledArr = shuffle(allCardsArrWithKeys)
   return shuffledArr;
 }
 

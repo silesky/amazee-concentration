@@ -8,9 +8,11 @@ class Board extends Component {
    super(props)
    this.updateStatus = this.updateStatus.bind(this);
    this.state = {
+
       cards: generateCardArray(),
       status: null, // current round so we get some feedback
       roundOneSelection: null, // if we're contains the uuid of the first item. it will never store the second item.
+      selectedId: null,
     }
    }
 
@@ -21,24 +23,36 @@ class Board extends Component {
 
     setTimeout(() => this.setState({status: null}), 1200); // hide red and green indicator
   }
-  onCardClick (selectedId) {
+  onCardClick (selectedId, selectedKey) {
+    console.log(selectedId, selectedKey);
     console.log('clicked!', this.state);
     const _isFinalRound = !!this.state.roundOneSelection;
     const _isMatch = (selectedId === this.state.roundOneSelection)
-    if (_isMatch && _isFinalRound) {
-      console.log('match!');
-     const newCards = this.state.cards.filter(({id}) => id !== selectedId);
+
+    this.setState({selectedId: selectedId})
+    // grab the selected Id and make the cards cisible
+
+    const _changeVisibility = (selectedKey, status) => {
+      const newCards = this.state.cards.map(eachCard => {
+       if (eachCard.key === selectedKey) {
+          eachCard.visible = status;
+       }
+       return eachCard;
+     });
      this.setState({cards: newCards});
-     this.updateStatus('success');
-    } else if (_isFinalRound) {
-      this.updateStatus('fail');
     }
+    _changeVisibility(selectedKey, true);
     if (!_isFinalRound) {
       this.setState({roundOneSelection: selectedId}) // if first round
     } else {
       this.setState({roundOneSelection: null});
     }
-
+    if (_isMatch && _isFinalRound) { // if we have a winnder
+      _changeVisibility(selectedId, true);
+      this.updateStatus('success');
+    } else if (_isFinalRound) {
+      this.updateStatus('fail');
+    }
 
   }
   render() {
@@ -50,10 +64,11 @@ class Board extends Component {
       <h4>{`Current Round: ${roundNum}`}</h4>
       <div className={`board--container`}>
         {
-          this.state.cards.map(({color, value, id}, index) => {
+          this.state.cards.map(({color, value, visible, id, key}, index) => {
             return (
             <Card
-              onCardClick={this.onCardClick.bind(this, id)}
+              visible={visible}
+              onCardClick={this.onCardClick.bind(this, id, key)}
               key={index}
               color={color}
               value={value}
