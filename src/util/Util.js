@@ -1,3 +1,4 @@
+import uuid from 'uuid';
 const shuffle = (array) => {
     let rand, index = -1,
         length = array.length,
@@ -21,7 +22,7 @@ export const generateCardArray = (numOfCards = 52) => {
   }
   let _cardArr = [];
   for (let i = 0; i < _actualCards; i++) {
-    const _cardObj = { color: _getRandomColor(), value: _getRandomNumber() }
+    const _cardObj = { color: _getRandomColor(), value: _getRandomNumber(), id: uuid() }
     _cardArr.push(_cardObj)
   }
   const allCardsArr = _cardArr.concat(_cardArr);

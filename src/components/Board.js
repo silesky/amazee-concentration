@@ -16,11 +16,14 @@ class Board extends Component {
       <h1>Concentration</h1>
       <div className="board--container">
         {
-          this.state.cards.map(({color, value}) => {
+          this.state.cards.map(({color, value, id}, index) => {
             return (
             <Card
+
+              key={index}
               color={color}
               value={value}
+              id={id}
             />
           )
         })
