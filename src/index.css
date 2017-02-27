@@ -4,8 +4,17 @@ body {
 	margin: auto;
 	max-width: 960px;
 }
-
+.fail {
+  color: red;
+}
+.success {
+  color: green;
+}
+.null {
+  color: black;
+}
 .card--container {
+  cursor: pointer;
 	display: flex;
 	justify-content: center;
 	align-items: center;

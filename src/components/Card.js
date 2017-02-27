@@ -1,10 +1,11 @@
 import React from 'react';
 
-export const Card = ({color, value}) => {
+export const Card = ({color, value, onCardClick}) => {
   // each card receieves a color and value prop
   const bgColorClass = `.${color}`  // e.g. red = .red
+  console.log('rendered!');
   return (
-  <div className={`card--container ${color}`}>
+  <div onClick={() => onCardClick()} className={`card--container ${color}`}>
     <span className="card--value">
       { value }
     </span>

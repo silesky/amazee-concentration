@@ -1,25 +1,59 @@
 import React, { Component } from 'react';
 import { Card } from './Card.js';
 import { generateCardArray } from './../util/Util';
+
+
 class Board extends Component {
    constructor(props) {
    super(props)
-   const generateColor =
+   this.updateStatus = this.updateStatus.bind(this);
    this.state = {
-      cards: generateCardArray()
+      cards: generateCardArray(),
+      status: null, // current round so we get some feedback
+      roundOneSelection: null, // if we're contains the uuid of the first item. it will never store the second item.
     }
+   }
+
+  updateStatus(status) {
+      (status === 'success')
+        ? this.setState({status: 'success'})
+        : this.setState({status: 'fail'})
+
+    setTimeout(() => this.setState({status: null}), 1200); // hide red and green indicator
+  }
+  onCardClick (selectedId) {
+    console.log('clicked!', this.state);
+    const _isFinalRound = !!this.state.roundOneSelection;
+    const _isMatch = (selectedId === this.state.roundOneSelection)
+    if (_isMatch && _isFinalRound) {
+      console.log('match!');
+     const newCards = this.state.cards.filter(({id}) => id !== selectedId);
+     this.setState({cards: newCards});
+     this.updateStatus('success');
+    } else if (_isFinalRound) {
+      this.updateStatus('fail');
+    }
+    if (!_isFinalRound) {
+      this.setState({roundOneSelection: selectedId}) // if first round
+    } else {
+      this.setState({roundOneSelection: null});
+    }
+
+
   }
   render() {
+    const roundNum = !this.state.roundOneSelection ? 'select your first card' : 'select your second card'
     console.log(this.state);
     return (
       <div>
-      <h1>Concentration</h1>
-      <div className="board--container">
+      <h1 className={this.state.status}>Concentration</h1>
+      <h4>{`Current Round: ${roundNum}`}</h4>
+      <div className={`board--container`}>
         {
           this.state.cards.map(({color, value, id}, index) => {
             return (
             <Card
-
+              onCardClick={this.onCardClick.bind(this, id)}
               key={index}
               color={color}
               value={value}
@@ -29,8 +63,7 @@ class Board extends Component {
         })
       }
     </div>
-   </div>
-
+    </div>
     );
   }
 }
