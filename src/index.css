@@ -11,12 +11,14 @@ body {
       height: 100px;
       width: 100px;
  }
+.board--container {
 
+}
 .red {
   background-color: red;
 }
-.black {
-  background-color: black;
+.green {
+  background-color: green;
 }
 .blue {
   background-color: blue;
