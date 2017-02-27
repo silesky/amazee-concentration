@@ -13,25 +13,22 @@ const shuffle = (array) => {
 export const generateCardArray = (numOfCards = 52) => {
   const _actualCards = numOfCards / 2;
   // e.g. if 52 cards, will generate a random num between 1 and 26, if 25 cards, will generate a random num between 1 and 13
-  const _getRandomNumber = () => Math.floor(Math.random() * (_actualCards + 1));
-
   const _getRandomColor = () => {
-    const colorArr = ['red', 'green', 'blue']
-    const index = Math.floor(Math.random() * 3) // random num bw 0 and 2
-    return colorArr[index];
+    const colorArr = ['red', 'green', 'blue', 'orange', 'purple', 'yellow', 'pink']
+    const index = Math.floor(Math.random() * colorArr.length) // random num bw 0 and 2
+    return colorArr[index]
   }
-  let _cardArr = [];
+  let _cardArr = []
   for (let i = 0; i < _actualCards; i++) {
-    const _cardObj = { color: _getRandomColor(), value: _getRandomNumber(), id: uuid(), visible: false } // important to not that these are pairs of each uuid
-    _cardArr.push(_cardObj)
+    const _cardObj = { color: _getRandomColor(), value: i, id: uuid(), visible: false } // important to not that these are pairs of each uuid
+    _cardArr.push(Object.assign({}, _cardObj))
+    _cardArr.push(Object.assign({}, _cardObj))
   }
-  const allCardsArr = _cardArr.concat(_cardArr);
-  const allCardsArrWithKeys = allCardsArr.map(eachCard => {
-    eachCard.key = uuid();
+  const _cardArrWithIndividualId = _cardArr.map(eachCard => {
+    eachCard['individualId'] = uuid()
     return eachCard
   })
-  const shuffledArr = shuffle(allCardsArrWithKeys)
-  return shuffledArr;
+  return shuffle(_cardArrWithIndividualId)
 }
 
 
@@ -39,3 +36,13 @@ export const generateCardArray = (numOfCards = 52) => {
 // console.assert((arr ? arr.length === 51 : false), 'arr.length should be 52');
 // console.assert(arr[0].color === ('red' || 'blue' || 'green'), 'a card should be red blue or green');
 // xconsole.assert(typeof (arr[0].value) === 'number', 'each card should have a value property that is a number')
+
+
+
+// WEBPACK FOOTER //
+// src/util/Util.js
+
+
+
+// WEBPACK FOOTER //
+// src/util/Util.js
