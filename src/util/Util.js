@@ -11,7 +11,9 @@ const shuffle = (array) => {
 }
 export const generateCardArray = (numOfCards = 52) => {
   const _actualCards = numOfCards / 2;
-  const _getRandomNumber = () => Math.floor(Math.random() * 29);
+  // e.g. if 52 cards, will generate a random num between 1 and 26, if 25 cards, will generate a random num between 1 and 13
+  const _getRandomNumber = () => Math.floor(Math.random() * (_actualCards + 1));
+
   const _getRandomColor = () => {
     const colorArr = ['red', 'green', 'blue']
     const index = Math.floor(Math.random() * 3) // random num bw 0 and 2
